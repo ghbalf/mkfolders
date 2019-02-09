@@ -1,0 +1,92 @@
+#!/usr/bin/perl
+# mkfolders - create a list of folders
+# usage: mkfolders {[--destination|-d DESTINATION-FOLDER] [--file|-f FILE] FOLDER1 [FOLDER2 ...]} | {--help|-h|-?}
+# where:
+#    - --help|-h|-?: show help and exit
+#    - --dest|-d DESTINATION-FOLDER: folder in which the list of folders will be created (default is '.')
+#    - --perms|-p PERMISSIONS: permissions with which the folders should be created (default is 0755)
+#    - --file|-f FILE: file with the list of folder names, one on a line
+#    - FOLDER1, FOLDER2, ...: list of folders to be created
+
+use strict;
+use Getopt::Long;
+
+main();
+
+sub help
+{
+    print("usage: mkfolders {[--dest|-d DESTINATION-FOLDER] [--file|-f FILE] [--perms|-p PERMISSIONS] FOLDER1 [FOLDER2 ...]} | {--help|-h|-?}\n",
+    "where:\n",
+    "  --help|-h|-?: show help and exit\n",
+    "  --dest|-d DESTINATION-FOLDER: folder in which the list of folders\n    will be created (default is '.')\n",
+    "  --perms|-p PERMISSIONS: permissions with which the folders should be\n    created (default is 0755)\n",
+    "  --file|-f FILE: file with the list of folder names, one on a line\n",
+    "  FOLDER1, FOLDER2, ...: list of folders to be created\n");
+    exit(0);
+}
+
+sub mkdirs
+{
+    my ($path, $perms) = @_;
+    my $dir = '.';
+
+    # if path starts with a '/' it is an absolute path else it is relative to the current folder
+    $dir = '' if $path =~ m/^\//;
+    for(grep {$_ !~ /^\s*$/} split('/', $path))
+    {
+        $dir .= "/$_";
+
+        # create folder if it does not exist yet
+        mkdir($dir, $perms) or die "Error creating folder \"$dir\": $!\n" if ! -e $dir;
+    }
+}
+
+sub main
+{
+    my $file = undef;
+    my $dest = '.';
+    my $perms = 0755;
+    my @folders = ();
+
+    # read the command line options into the corresponding variables
+    GetOptions(
+        'dest|d=s' => \$dest,
+        'file|f=s'  => \$file,
+        'perms|p=i' => \$perms,
+        'help|h|?' => \&help
+    );
+
+    # read the template file, if one is given
+    eval
+    {
+        if(defined $file)
+        {
+            open(IN, "<$file") or die "Error opening file \"$file\" for reading: $!\n";
+            @folders = <IN>;
+            chomp(@folders);
+            close(IN);
+        }
+    };
+    print $@ and exit(1) if$@;
+
+    # consider the folders given on the command line
+    push (@folders, @ARGV);
+
+    # create all folders
+    eval
+    {
+        # remove comments
+        map { s/#.*$// } @folders;
+        # remove leading and trailing white space
+        map { s/^\s+|\s+$//g } @folders;
+        # create folders
+        for(@folders)
+        {
+            mkdirs("$dest/$_", $perms);
+        }
+    };
+    print $@ and exit(2) if$@;
+
+    exit(0);
+}
+
