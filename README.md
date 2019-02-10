@@ -2,7 +2,7 @@
 Perl script for creating a list of folders
 
 ### Usage:
-mkfolders {[--destination|-d DESTINATION-FOLDER] [--file|-f FILE] FOLDER1 [FOLDER2 ...]} | {--help|-h|-?}
+`mkfolders {[--destination|-d DESTINATION-FOLDER] [--file|-f FILE] FOLDER1 [FOLDER2 ...]} | {--help|-h|-?}`
 
 ### where the options are:
   * `--help|-h|-?: show help and exit`
