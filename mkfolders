@@ -1,4 +1,6 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
+
+####!/usr/bin/perl
 # mkfolders - create a list of folders
 # usage: mkfolders {[--destination|-d DESTINATION-FOLDER] [--file|-f FILE] FOLDER1 [FOLDER2 ...]} | {--help|-h|-?}
 # where:
@@ -21,7 +23,8 @@ sub help
     "  --dest|-d DESTINATION-FOLDER: folder in which the list of folders\n    will be created (default is '.')\n",
     "  --perms|-p PERMISSIONS: permissions with which the folders should be\n    created (default is 0755)\n",
     "  --file|-f FILE: file with the list of folder names, one on a line\n",
-    "  FOLDER1, FOLDER2, ...: list of folders to be created\n");
+    "  FOLDER1, FOLDER2, ...: list of folders to be created.\n",
+    "    If a folder name is a single '-', read folders from STDIN\n");
     exit(0);
 }
 
@@ -69,8 +72,18 @@ sub main
     };
     print $@ and exit(1) if$@;
 
+    # if a '-' is entered on the command line, read lines from STDIN
+    if(grep {$_ eq '-'} @ARGV)
+    {
+      while(<>)
+      {
+        chomp($_);
+        last if $_ eq '';
+        push (@folders, $_);
+      }
+    }
     # consider the folders given on the command line
-    push (@folders, @ARGV);
+    push (@folders, grep { $_ != '-' } @ARGV);
 
     # create all folders
     eval
@@ -89,4 +102,3 @@ sub main
 
     exit(0);
 }
-
