@@ -9,4 +9,4 @@ Perl script for creating a list of folders
   * `--dest|-d DESTINATION-FOLDER: folder in which the list of folders will be created (default is '.')`
   * `--perms|-p PERMISSIONS: permissions with which the folders should be created (default is 0755)`
   * `--file|-f FILE: file with the list of folder names, one on a line`
-  * `FOLDER1, FOLDER2, ...: list of folders to be created`
+  * `FOLDER1, FOLDER2, ...: list of folder names to be created. If a folder name is a single '-', read folder names from STDIN`
