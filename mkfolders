@@ -24,7 +24,7 @@ sub help
     "  --perms|-p PERMISSIONS: permissions with which the folders should be\n    created (default is 0755)\n",
     "  --file|-f FILE: file with the list of folder names, one on a line\n",
     "  FOLDER1, FOLDER2, ...: list of folders to be created.\n",
-    "    If a folder name is a single '-', read folders from STDIN\n");
+    "    If a folder name is a single '-', read folder names from STDIN\n");
     exit(0);
 }
 
