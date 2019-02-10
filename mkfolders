@@ -23,7 +23,7 @@ sub help
     "  --dest|-d DESTINATION-FOLDER: folder in which the list of folders\n    will be created (default is '.')\n",
     "  --perms|-p PERMISSIONS: permissions with which the folders should be\n    created (default is 0755)\n",
     "  --file|-f FILE: file with the list of folder names, one on a line\n",
-    "  FOLDER1, FOLDER2, ...: list of folders to be created.\n",
+    "  FOLDER1, FOLDER2, ...: list of folder names to be created.\n",
     "    If a folder name is a single '-', read folder names from STDIN\n");
     exit(0);
 }
