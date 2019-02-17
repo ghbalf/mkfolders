@@ -2,8 +2,8 @@
 doc
 datasheets
 gerber
-lib_sch
-lib_fp.pretty
-lib_3d.models # comment
+0_lib_sch
+0_lib_fp.pretty
+0_lib_3d.models # comment
 # comment
 
