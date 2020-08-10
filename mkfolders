@@ -88,6 +88,8 @@ sub main
     # create all folders
     eval
     {
+        # create destination folder
+        mkdirs($dest, $perms);
         # remove comments
         map { s/#.*$// } @folders;
         # remove leading and trailing white space
